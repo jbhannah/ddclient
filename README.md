@@ -10,7 +10,7 @@ A dynamic DNS service client in Rust.
 
 ## Installation
 
-    cargo install ddclient
+    cargo install --git https://github.com/jbhannah/ddclient.git
 
 ## Usage
 
@@ -21,4 +21,5 @@ A dynamic DNS service client in Rust.
 Copyright © 2020 Jesse B. Hannah. Licensed under the terms of the MIT License
 (see [LICENSE](LICENSE)).
 
+[actions-cargo]: https://github.com/jbhannah/ddclient/actions?query=workflow%3ACargo
 [cloudflare]: https://www.cloudflare.com/
