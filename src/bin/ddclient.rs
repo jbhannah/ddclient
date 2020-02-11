@@ -1,4 +1,5 @@
 use clap::{App, AppSettings, Arg, SubCommand};
+use ddclient::ip::get_addr;
 
 const ARG_DOMAIN: &str = "DOMAIN";
 const ARG_ENDPOINT: &str = "endpoint";
@@ -15,7 +16,7 @@ async fn main() {
         .help("Domain name to update records for")
         .required(true);
 
-    let _matches = App::new(env!("CARGO_PKG_NAME"))
+    let matches = App::new(env!("CARGO_PKG_NAME"))
         .author(env!("CARGO_PKG_AUTHORS"))
         .version(env!("CARGO_PKG_VERSION"))
         .setting(AppSettings::SubcommandRequiredElseHelp)
@@ -64,4 +65,11 @@ async fn main() {
                 ),
         )
         .get_matches();
+
+    let endpoint = matches
+        .value_of(ARG_ENDPOINT)
+        .expect("could not get endpoint");
+    if let Ok(addr) = get_addr(endpoint).await {
+        println!("{}", addr);
+    }
 }
