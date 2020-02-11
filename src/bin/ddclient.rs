@@ -1,5 +1,7 @@
 use clap::{App, AppSettings, Arg, SubCommand};
+use ddclient::client::{cf::Cloudflare, Client};
 use ddclient::ip::get_addr;
+use failure::Error;
 
 const ARG_DOMAIN: &str = "DOMAIN";
 const ARG_ENDPOINT: &str = "endpoint";
@@ -11,7 +13,7 @@ const ARG_CF_TOKEN: &str = "token";
 const CMD_CLOUDFLARE: &str = "cf";
 
 #[tokio::main]
-async fn main() {
+async fn main() -> Result<(), Error> {
     let domain_arg = Arg::with_name(ARG_DOMAIN)
         .help("Domain name to update records for")
         .required(true);
@@ -66,10 +68,33 @@ async fn main() {
         )
         .get_matches();
 
-    let endpoint = matches
-        .value_of(ARG_ENDPOINT)
-        .expect("could not get endpoint");
-    if let Ok(addr) = get_addr(endpoint).await {
-        println!("{}", addr);
+    if let (cmd, Some(sub_matches)) = matches.subcommand() {
+        let endpoint = matches
+            .value_of(ARG_ENDPOINT)
+            .expect("could not get endpoint");
+        let addr_handle = get_addr(endpoint);
+
+        let domain = sub_matches
+            .value_of(ARG_DOMAIN)
+            .expect("no domain specified");
+
+        let mut client = match cmd {
+            CMD_CLOUDFLARE => {
+                let email = sub_matches.value_of(ARG_CF_EMAIL).unwrap();
+                let key = sub_matches.value_of(ARG_CF_KEY).unwrap();
+
+                Cloudflare::new(email, key)?
+            }
+            _ => panic!("could not build client"),
+        };
+
+        let check_handle = client.check(domain);
+
+        match tokio::try_join!(addr_handle, check_handle) {
+            Ok((addr, _)) => Ok(client.update(domain, addr).await?),
+            Err(err) => Err(err),
+        }
+    } else {
+        Err(failure::err_msg("invalid command"))
     }
 }
