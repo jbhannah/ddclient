@@ -9,7 +9,8 @@ const ARG_CF_TOKEN: &str = "token";
 
 const CMD_CLOUDFLARE: &str = "cf";
 
-fn main() {
+#[tokio::main]
+async fn main() {
     let domain_arg = Arg::with_name(ARG_DOMAIN)
         .help("Domain name to update records for")
         .required(true);
