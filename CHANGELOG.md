@@ -7,6 +7,12 @@ The format is based on [Keep a Changelog][], and this project adheres to
 
 ## Unreleased
 
+## v0.1.2 - 2020-02-12
+
+### Changed
+
+- Don't update records if their contents won't change
+
 ## v0.1.1 - 2020-02-11
 
 ### Fixed

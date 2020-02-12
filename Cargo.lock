@@ -190,7 +190,7 @@ dependencies = [
 [[package]]
 name = "cloudflare"
 version = "0.6.4"
-source = "git+https://github.com/jbhannah/cloudflare-rs?branch=list-zones#13ba5479433bcc841b3612b658395ee89f41c845"
+source = "git+https://github.com/jbhannah/cloudflare-rs?branch=dnscontent-partialeq#9f4fca5053da38fccf1bee555fa94b256293e822"
 dependencies = [
  "async-trait",
  "chrono",
@@ -283,7 +283,7 @@ checksum = "f4f47ca1860a761136924ddd2422ba77b2ea54fe8cc75b9040804a0d9d32ad97"
 
 [[package]]
 name = "ddclient"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "async-trait",
  "clap",
