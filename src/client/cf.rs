@@ -49,8 +49,10 @@ impl Client for Cloudflare {
             IpAddr::V6(content) => dns::DnsContent::AAAA { content },
         };
 
-        let records = self.get_dns_records(zone_identifier, domain).await?;
+        let mut records = self.get_dns_records(zone_identifier, domain).await?;
         let result = if records.is_empty() {
+            println!("no record, creating");
+
             let params = dns::CreateDnsRecordParams {
                 ttl: Some(1),
                 priority: None,
@@ -67,23 +69,33 @@ impl Client for Cloudflare {
                 .await?
                 .result
         } else {
-            let params = dns::UpdateDnsRecordParams {
-                ttl: Some(1),
-                proxied: None,
-                name: domain,
-                content,
-            };
+            let record = records.pop().unwrap();
 
-            let identifier = &records.first().unwrap().id;
+            if record.content == content {
+                println!("record matches, skipping update");
 
-            self.client
-                .request(&dns::UpdateDnsRecord {
-                    zone_identifier,
-                    identifier,
-                    params,
-                })
-                .await?
-                .result
+                record
+            } else {
+                println!("updating");
+
+                let params = dns::UpdateDnsRecordParams {
+                    ttl: Some(1),
+                    proxied: None,
+                    name: domain,
+                    content,
+                };
+
+                let identifier = &record.id;
+
+                self.client
+                    .request(&dns::UpdateDnsRecord {
+                        zone_identifier,
+                        identifier,
+                        params,
+                    })
+                    .await?
+                    .result
+            }
         };
 
         println!("{:#?}", result);
