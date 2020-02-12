@@ -7,6 +7,12 @@ The format is based on [Keep a Changelog][], and this project adheres to
 
 ## Unreleased
 
+## v0.1.1 - 2020-02-11
+
+### Fixed
+
+- Use DNS record identifier when updating Cloudflare records
+
 ## v0.1.0 - 2020-02-11
 
 ### Added

@@ -1,6 +1,6 @@
 [package]
 name = "ddclient"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["Jesse B. Hannah <jesse@jbhannah.net>"]
 edition = "2018"
 description = "Dynamic DNS service client"

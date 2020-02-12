@@ -74,10 +74,12 @@ impl Client for Cloudflare {
                 content,
             };
 
+            let identifier = &records.first().unwrap().id;
+
             self.client
                 .request(&dns::UpdateDnsRecord {
                     zone_identifier,
-                    identifier: domain,
+                    identifier,
                     params,
                 })
                 .await?
