@@ -10,7 +10,7 @@ repository = "https://github.com/jbhannah/ddclient"
 documentation = "https://docs.rs/ddclient"
 
 [dependencies]
-async-trait = "0.1.27"
+async-trait = "0.1.31"
 clap = "2.33.0"
 cloudflare = { git = "https://github.com/jbhannah/cloudflare-rs", branch = "dnscontent-partialeq" }
 failure = "0.1.7"
