@@ -15,4 +15,4 @@ clap = "2.33.0"
 cloudflare = { git = "https://github.com/jbhannah/cloudflare-rs", branch = "dnscontent-partialeq" }
 failure = "0.1.7"
 reqwest = { version = "0.10.6", features = ["json"] }
-tokio = { version = "0.2", features = ["macros"] }
+tokio = { version = "1.11", features = ["macros"] }
